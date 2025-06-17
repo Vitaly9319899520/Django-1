@@ -2,11 +2,11 @@ from django.db import models
 
 
 class Product(models.Model):
-    name = models.CharField(max_length=100, verbose_name='имя')
-    description = models.TextField(max_length=150)
+    name = models.CharField(max_length=100, verbose_name='имя', help_text='введите имя')
+    description = models.TextField(max_length=150, verbose_name='описание')
     photo = models.ImageField(upload_to='product/foto', blank=True, null=True)
     category = models.ForeignKey('Category', on_delete=models.SET_NULL, verbose_name='категория', null=True, blank=True,related_name='products',)  # привязка
-    price = models.IntegerField()
+    price = models.IntegerField(blank=True, null=True)
     created_at = models.DateField(blank=True, null=True, help_text='Укажите дату создания')
     updated_at = models.DateField(blank=True, null=True, help_text='Укажите дату изменения')
 
