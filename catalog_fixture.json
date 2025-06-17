@@ -1,0 +1,23 @@
+[
+{
+    "model": "catalog.product",
+    "pk": 1,
+    "fields": {
+        "name": "Картошка",
+        "description": "крупная",
+        "photo": "",
+        "category": 1,
+        "price": 5,
+        "created_at": null,
+        "updated_at": null
+    }
+},
+{
+    "model": "catalog.category",
+    "pk": 1,
+    "fields": {
+        "name": "Овощи",
+        "description": "из Беларуси"
+    }
+}
+]
