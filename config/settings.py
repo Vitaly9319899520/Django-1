@@ -117,7 +117,7 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS =(BASE_DIR/'static',)
 
 MEDIA_URL = '/madia/'
-MEDIA_ROOT = BASE_DIR/ 'madia'
+MEDIA_ROOT = BASE_DIR/'madia'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
