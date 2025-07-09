@@ -14,7 +14,7 @@
                             {{ form.as_p }}
                         </div>
                         <button type="submit" class="btn btn-primary btn-block">
-                            {% if form.instance.pk %}
+                            {% if object %}
                             Сохранить
                             {% else %}
                             Создать
