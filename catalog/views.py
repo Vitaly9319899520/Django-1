@@ -5,6 +5,8 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from catalog.forms import ProductForm, CategoryForm
 from catalog.models import Product, Category
 
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 # def home(request):
 #     return render(request,'home.html')
@@ -30,12 +32,12 @@ class CatalogDetailView(DetailView):
 #     context = {'Product': catalog}
 #     return render(request, 'product_detail.html', context)
 
-class CatalogView(CreateView):
+class CatalogView(LoginRequiredMixin,CreateView):
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy('catalog:catalog_list')
 
-class CatalogUpdateView(UpdateView):
+class CatalogUpdateView(LoginRequiredMixin,UpdateView):
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy('catalog:catalog_list')
