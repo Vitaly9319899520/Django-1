@@ -1,3 +1,5 @@
+from django.contrib.auth.decorators import permission_required
+from django.http import HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -37,14 +39,28 @@ class CatalogView(LoginRequiredMixin,CreateView):
     form_class = ProductForm
     success_url = reverse_lazy('catalog:catalog_list')
 
+
 class CatalogUpdateView(LoginRequiredMixin,UpdateView):
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy('catalog:catalog_list')
 
+
+    def dispatch(self, request, *args, **kwargs):
+        product = self.get_object()
+        if product.owner != request.user and not request.user.has_perm('catalog.change_product'):
+            return HttpResponseForbidden()
+        return super().dispatch(request, *args, **kwargs)
+
 class CatalogDeleteView(DeleteView):
     model = Product
     success_url = reverse_lazy('catalog:catalog_list')
+
+    def dispatch(self, request, *args, **kwargs):
+        product = self.get_object()
+        if product.owner != request.user and not request.user.has_perm('catalog.delete_product'):
+            return HttpResponseForbidden()
+        return super().dispatch(request, *args, **kwargs)
 
 class CategoryCreateView(CreateView):
     model = Category
@@ -57,4 +73,21 @@ class CategoryUpdateView(UpdateView):
     form_class = CategoryForm
     template_name = 'catalog/category_form.html'
     success_url = reverse_lazy('catalog:catalog_list')
+
+
+@permission_required('catalog.can_unpublish_product', raise_exception=True)
+def unpublish_product(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    product.is_published = False
+    product.save()
+
+class ProductCreateView(CreateView):
+    model = Product
+    fields = ['name', 'description']  # укажи свои поля
+    template_name = 'product/create_product.html'
+
+    def form_valid(self, form):
+        form.instance.owner = self.request.user  # Устанавливаем владельца
+        return super().form_valid(form)
+
 
