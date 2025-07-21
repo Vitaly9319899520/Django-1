@@ -20,6 +20,8 @@ class CatalogListView(ListView):
     model = Product
     template_name = 'catalog/product_list.html'
 
+
+
 # def catalog_list(request):
 #     catalog = Product.objects.all()
 #     context = {'catalog': catalog}
